@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // WebSocket connection
     let ws;
     if (!loginForm) { // Only connect if on sheet.html
-        ws = new WebSocket("ws://localhost:8000/ws");
+        ws = new WebSocket("wss://backend-for-dnd2.onrender.com/ws");
 
         ws.onopen = (event) => {
             console.log("WebSocket opened:", event);
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                const response = await fetch(`http://localhost:8000/character/${playerId}`);
+                const response = await fetch(`https://backend-for-dnd2.onrender.com/character/${playerId}`);
                 if (!response.ok) {
                     throw new Error('Character not found');
                 }
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadCharacterSheet(playerId) {
         try {
-            const response = await fetch(`http://localhost:8000/character/${playerId}`);
+            const response = await fetch(`https://backend-for-dnd2.onrender.com/character/${playerId}`);
             if (!response.ok) {
                 throw new Error('Character not found');
             }
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         diceRollerContainer.style.display = 'block';
 
         try {
-            const response = await fetch('http://localhost:8000/characters');
+            const response = await fetch('https://backend-for-dnd2.onrender.com/characters');
             const characters = await response.json();
             hostPlayerList.innerHTML = '<h3>Players</h3>';
             characters.forEach(char => {
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 playerLink.textContent = char.character_name;
                 playerLink.addEventListener('click', async (e) => {
                     e.preventDefault();
-                    const charResponse = await fetch(`http://localhost:8000/character/${char.id}`);
+                    const charResponse = await fetch(`https://backend-for-dnd2.onrender.com/character/${char.id}`);
                     const charData = await charResponse.json();
                     displayCharacterSheet(charData, hostCharacterSheet);
                     current_host_selected_player_name = charData.character_name; // Set selected player name
