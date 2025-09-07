@@ -13,6 +13,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const diceRollerContainer = document.getElementById('dice-roller-container');
 
     let currentPlayerId = null;
+    let current_character_name = null; // New global variable
+    let current_host_selected_player_name = null; // New global variable for host
+
+    // WebSocket connection
+    let ws;
+    if (!loginForm) { // Only connect if on sheet.html
+        ws = new WebSocket("ws://localhost:8000/ws");
+
+        ws.onopen = (event) => {
+            console.log("WebSocket opened:", event);
+        };
+
+        ws.onmessage = (event) => {
+            console.log("WebSocket message received:", event.data);
+            // Display notification
+            showNotification(event.data);
+        };
+
+        ws.onclose = (event) => {
+            console.log("WebSocket closed:", event);
+        };
+
+        ws.onerror = (event) => {
+            console.error("WebSocket error:", event);
+        };
+    }
 
     // Page detection
     if (loginForm) {
@@ -86,6 +112,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Stop animation and display final result
                     clearInterval(animation);
                     rollResult.textContent = finalResult;
+                    // Send roll result via WebSocket
+                    if (ws && ws.readyState === WebSocket.OPEN) {
+                        if (mode === 'host') {
+                            if (current_host_selected_player_name) {
+                                ws.send(`${current_host_selected_player_name} rolled a die.`);
+                            }
+                            // If no player is selected by host, do nothing (don't send message)
+                        } else {
+                            ws.send(`${current_character_name || 'Unknown Player'} rolled a d${sides} and got ${finalResult}!`);
+                        }
+                    }
                 }
             }, animationInterval);
         });
@@ -101,6 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
             displayCharacterSheet(characterData, characterSheetContainer);
             characterSheetContainer.style.display = 'grid';
             diceRollerContainer.style.display = 'block';
+            current_character_name = characterData.character_name; // Populate the new global variable
         } catch (error) {
             characterSheetContainer.innerHTML = `<p class="error">${error.message}</p>`;
             characterSheetContainer.style.display = 'block';
@@ -124,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const charResponse = await fetch(`http://localhost:8000/character/${char.id}`);
                     const charData = await charResponse.json();
                     displayCharacterSheet(charData, hostCharacterSheet);
+                    current_host_selected_player_name = charData.character_name; // Set selected player name
                 });
                 hostPlayerList.appendChild(playerLink);
             });
@@ -304,5 +343,24 @@ document.addEventListener('DOMContentLoaded', () => {
             featuresSection.appendChild(featureEl);
         });
         container.appendChild(featuresSection);
+    }
+
+    function showNotification(message) {
+        const notificationContainer = document.getElementById('notification-container');
+        if (!notificationContainer) {
+            console.warn("Notification container not found.");
+            return;
+        }
+
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.textContent = message;
+
+        notificationContainer.appendChild(notification);
+
+        // Automatically remove notification after some time
+        setTimeout(() => {
+            notification.remove();
+        }, 5000); // 5 seconds
     }
 });
