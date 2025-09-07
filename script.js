@@ -71,8 +71,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         rollButton.addEventListener('click', () => {
             const sides = parseInt(diceSelect.value, 10);
-            const result = Math.floor(Math.random() * sides) + 1;
-            rollResult.textContent = result;
+            const finalResult = Math.floor(Math.random() * sides) + 1; // Calculate final result immediately
+
+            let animationCount = 0;
+            const animationFrames = 20; // Number of random numbers to show
+            const animationInterval = 50; // Milliseconds between each random number display
+
+            const animation = setInterval(() => {
+                if (animationCount < animationFrames) {
+                    // Display a random number during the animation
+                    rollResult.textContent = Math.floor(Math.random() * sides) + 1;
+                    animationCount++;
+                } else {
+                    // Stop animation and display final result
+                    clearInterval(animation);
+                    rollResult.textContent = finalResult;
+                }
+            }, animationInterval);
         });
     }
 
