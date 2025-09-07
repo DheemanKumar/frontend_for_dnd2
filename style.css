@@ -1,0 +1,54 @@
+
+body {
+    font-family: sans-serif;
+    margin: 20px;
+}
+
+#login-container {
+    text-align: center;
+}
+
+#character-sheet-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.character-section {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.error {
+    color: red;
+}
+
+#dice-roller-container {
+    display: none; /* Hidden by default */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+#host-mode-container {
+    display: flex;
+}
+
+#host-player-list {
+    width: 200px;
+    border-right: 1px solid #ccc;
+    padding: 10px;
+}
+
+#host-character-sheet {
+    flex-grow: 1;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}

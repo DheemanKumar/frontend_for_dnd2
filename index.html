@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Character Sheet - Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="login-container">
+        <h1>D&D Character Sheet</h1>
+        <form id="login-form">
+            <label for="player-id">Player ID:</label>
+            <input type="text" id="player-id" name="player-id" required>
+            <button type="submit">Load Character</button>
+        </form>
+        <p id="login-error" class="error"></p>
+    </div>
+
+    <div id="char-preview" style="display: none;">
+        <h3>Character Found:</h3>
+        <p id="char-preview-info"></p>
+        <button id="join-button">Join</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

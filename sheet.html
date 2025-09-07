@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Character Sheet</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="character-sheet-container" style="display: none;">
+        <!-- Character data will be displayed here -->
+    </div>
+
+    <div id="host-mode-container" style="display: none;">
+        <div id="host-player-list"></div>
+        <div id="host-character-sheet"></div>
+    </div>
+
+    <div id="dice-roller-container" style="display: none;">
+        <h3>Dice Roller</h3>
+        <select id="dice-select">
+            <option value="4">d4</option>
+            <option value="6">d6</option>
+            <option value="8">d8</option>
+            <option value="10">d10</option>
+            <option value="12">d12</option>
+            <option value="16">d16</option>
+            <option value="20">d20</option>
+        </select>
+        <button id="roll-button">Roll</button>
+        <p>Result: <span id="roll-result"></span></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
